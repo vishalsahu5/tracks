@@ -8,10 +8,13 @@ import useLocation from "../hooks/useLocation";
 import { Context as LocationContext } from "../context/LocationContext";
 
 import Map from "../components/Map";
+import TrackForm from "../components/TrackForm";
 
 const TrackCreateScreen = ({ isFocused }) => {
-  const { addLocation } = useContext(LocationContext);
-  const [err] = useLocation(isFocused, addLocation);
+  const { state, addLocation } = useContext(LocationContext);
+  const [err] = useLocation(isFocused, location => {
+    addLocation(location, state.recording);
+  });
 
   console.log(isFocused);
 
@@ -20,6 +23,7 @@ const TrackCreateScreen = ({ isFocused }) => {
       <Text h2>Create a Track</Text>
       <Map />
       {err ? <Text>Please enable location services</Text> : null}
+      <TrackForm />
     </SafeAreaView>
   );
 };
